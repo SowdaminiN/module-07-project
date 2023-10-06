@@ -49,6 +49,7 @@ def send_patient_details(host: str, queue_name: str, queue_name1: str, queue_nam
             conn = pika.BlockingConnection(pika.ConnectionParameters(host))
             # use the connection to create a communication channel
             ch = conn.channel()
+
             ch.queue_declare(queue=queue_name, durable=True)    
             ch.queue_declare(queue=queue_name1, durable=True)
             ch.queue_declare(queue=queue_name2, durable=True)
@@ -79,23 +80,23 @@ def send_patient_details(host: str, queue_name: str, queue_name1: str, queue_nam
                 MESSAGE = Patient_details.encode()
                 # use the socket sendto() method to send the message
                 sock.sendto(MESSAGE, address)
-                ch.basic_publish(exchange="", routing_key=queue_name, body=MESSAGE)
+                ch.basic_publish(exchange="", routing_key=queue_name1, body=MESSAGE)
                 # print a message to the console for the user
                 print(f" [x] Sent {MESSAGE} for Patient with ID {PatientID}")
             except ValueError:
                 pass
 
             try:
-                Temp= round(float(Temperature),1)
+                Temp1= round(float(Temperature),1)
                 Patient_Name = f"{FirstName} {LastName}"
                 PatientID= int(PatientID)
                 # create a message from our data
-                Patient_details = f"PatientID:{PatientID},Name:{Patient_Name},Temp:{Temp}"
+                Patient_details = f"PatientID:{PatientID},Name:{Patient_Name},Temp:{Temp1}"
                 # prepare a binary (1s and 0s) message to stream
                 MESSAGE = Patient_details.encode()
                 # use the socket sendto() method to send the message
                 sock.sendto(MESSAGE, address)
-                ch.basic_publish(exchange="", routing_key=queue_name, body=MESSAGE)
+                ch.basic_publish(exchange="", routing_key=queue_name2, body=MESSAGE)
                 # print a message to the console for the user
                 print(f" [x] Sent {MESSAGE} for Patient with ID {PatientID}")
             except ValueError:
@@ -106,7 +107,7 @@ def send_patient_details(host: str, queue_name: str, queue_name1: str, queue_nam
                 Patient_Name = f"{FirstName} {LastName}"
                 PatientID= int(PatientID)
                 # create a message from our data
-                Patient_details = f"PatientID:{PatientID},Name:{Patient_Name},SPO2:{SPO2}"
+                Patient_details = f"PatientID:{PatientID},Name:{Patient_Name},SPO2:{spo2}"
                 # prepare a binary (1s and 0s) message to stream
                 MESSAGE = Patient_details.encode()
                 # use the socket sendto() method to send the message

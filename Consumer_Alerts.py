@@ -41,9 +41,9 @@ def bp_callback(ch, method, properties, body):
         diastolic_bp = int(data[2].split('/')[1].strip())
 
         if systolic_bp > 120 or systolic_bp <= 90:
-            print(f"!! Warning !! Blood Pressure Alert !! for {data[1]}")
+            print(f"!! Warning !! Blood Pressure Alert !! for {data}")
         elif diastolic_bp < 80 or diastolic_bp > 95:
-            print(f"!! Warning !! Blood Pressure Alert !! for {data[1]}")
+            print(f"!! Warning !! Blood Pressure Alert !! for {data}")
         else:
             print(f"[x] Blood Pressure vitals are Good for {data}")
 
